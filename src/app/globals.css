@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-dark: #0A0A0A;
+  --color-bg-dark-2: #111111;
+  --color-bg-light: #FAFAFA;
+  --color-bg-light-2: #FFFFFF;
+  --color-accent: #00E87B;
+  --color-accent-hover: #00FF8C;
+  --color-accent-muted: rgba(0, 232, 123, 0.1);
+  --color-text-primary-dark: #FFFFFF;
+  --color-text-secondary-dark: #94A3B8;
+  --color-text-primary-light: #0F172A;
+  --color-text-secondary-light: #64748B;
+  --color-border-dark: #1E293B;
+  --color-border-light: #E2E8F0;
+
+  --font-syne: var(--font-syne-var), sans-serif;
+  --font-dm-sans: var(--font-dm-sans-var), sans-serif;
+  --font-mono: var(--font-jetbrains-mono-var), monospace;
+
+  --animate-logo-scroll: logoScroll 30s linear infinite;
+  --animate-gradient-shift: gradientShift 8s ease-in-out infinite;
+
+  @keyframes logoScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+}
+
+:root {
+  --bg-dark: #0A0A0A;
+  --bg-dark-2: #111111;
+  --bg-light: #FAFAFA;
+  --bg-light-2: #FFFFFF;
+  --accent: #00E87B;
+  --accent-hover: #00FF8C;
+  --accent-muted: rgba(0, 232, 123, 0.1);
+  --text-primary-dark: #FFFFFF;
+  --text-secondary-dark: #94A3B8;
+  --text-primary-light: #0F172A;
+  --text-secondary-light: #64748B;
+  --border-dark: #1E293B;
+  --border-light: #E2E8F0;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Noise texture for dark sections */
+.noise-texture {
+  position: relative;
+}
+.noise-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+.noise-texture > * {
+  position: relative;
+  z-index: 1;
+}
