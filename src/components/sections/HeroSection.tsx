@@ -1,147 +1,179 @@
 "use client";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/Button";
-import { ArrowDown } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import Link from "next/link";
 
 export function HeroSection() {
+  const reduce = useReducedMotion();
+
+  const clients = ["Paraizo", "Swarnsootra", "Odra Organics", "Atatika Studios", "Exzept"];
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-dark">
-      {/* Animated gradient mesh background */}
-      <div className="absolute inset-0 pointer-events-none">
+    <section className="dark-section relative min-h-screen flex items-center pt-16" style={{ background: "#050505" }}>
+      {/* Gradient mesh background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full opacity-20"
+          className="absolute w-[600px] h-[600px] rounded-full"
           style={{
-            background: "radial-gradient(circle, #00E87B 0%, transparent 70%)",
-            filter: "blur(80px)",
-            animation: "gradientShift 8s ease-in-out infinite",
+            background: "radial-gradient(circle, rgba(0,232,123,0.07) 0%, transparent 70%)",
+            top: "-100px",
+            right: "-100px",
+            animation: reduce ? "none" : "meshShift 15s ease-in-out infinite",
           }}
         />
         <div
-          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full opacity-10"
+          className="absolute w-[500px] h-[500px] rounded-full"
           style={{
-            background: "radial-gradient(circle, #00E87B 0%, transparent 70%)",
-            filter: "blur(60px)",
-            animation: "gradientShift 12s ease-in-out infinite reverse",
+            background: "radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%)",
+            bottom: "0px",
+            left: "-100px",
           }}
         />
-        {/* Grid overlay */}
+        {/* Subtle grid lines */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
-            backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
+            backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
           }}
         />
       </div>
 
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-        {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          <span className="inline-block text-accent text-xs font-mono font-semibold uppercase tracking-[0.2em] mb-6 px-4 py-2 rounded-full border border-accent/20 bg-accent/5">
-            Performance Marketing for D2C Brands
-          </span>
-        </motion.div>
+      <div className="max-w-[1280px] mx-auto px-6 py-24 md:py-32 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 items-center">
+          {/* Left content */}
+          <div className="max-w-3xl">
+            <motion.p
+              initial={reduce ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-xs font-semibold uppercase mb-6"
+              style={{ color: "#00E87B", letterSpacing: "0.2em" }}
+            >
+              Performance Marketing for D2C Brands
+            </motion.p>
 
-        {/* H1 */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="font-syne font-bold text-5xl md:text-7xl text-white leading-tight mb-6 max-w-5xl mx-auto"
-        >
-          We Scale D2C Brands to{" "}
-          <span
-            className="text-accent"
-            style={{
-              textShadow: "0 0 40px rgba(0, 232, 123, 0.3)",
-            }}
-          >
-            Profitable Growth
-          </span>{" "}
-          Through Meta Ads &amp; CRO
-        </motion.h1>
+            <motion.h1
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="font-display text-white leading-[1.05] mb-6"
+              style={{ fontSize: "clamp(48px, 8vw, 96px)" }}
+            >
+              <motion.span
+                initial={reduce ? false : { opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+                className="block"
+              >
+                We Scale D2C Brands
+              </motion.span>
+              <motion.span
+                initial={reduce ? false : { opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.5 }}
+                className="block"
+              >
+                to{" "}
+                <em className="not-italic" style={{ color: "#00E87B" }}>Profitable</em>
+              </motion.span>
+              <motion.span
+                initial={reduce ? false : { opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.6 }}
+                className="block"
+              >
+                Growth
+              </motion.span>
+            </motion.h1>
 
-        {/* Subheadline */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="text-text-secondary-dark text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
-        >
-          Stop guessing with your ad spend. We build data-driven marketing systems that turn browsers into buyers — consistently, profitably, and at scale.
-        </motion.p>
+            <motion.p
+              initial={reduce ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="text-lg md:text-xl leading-relaxed mb-8 max-w-xl"
+              style={{ color: "#8A8F98" }}
+            >
+              Stop burning ad budget on agencies that report on impressions. We optimize for revenue, ROAS, and actual business growth.
+            </motion.p>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-        >
-          <div className="relative">
-            <div className="absolute inset-0 bg-accent/30 blur-xl rounded-full" />
-            <Button href="/book-strategy-call" size="lg" variant="primary" className="relative">
-              Book Free Strategy Call
-            </Button>
-          </div>
-          <Button href="/results" size="lg" variant="secondary">
-            View Our Results
-          </Button>
-        </motion.div>
+            <motion.div
+              initial={reduce ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.85 }}
+              className="flex flex-wrap gap-4 mb-10"
+            >
+              <Link
+                href="/book-strategy-call"
+                className="px-8 py-4 rounded-full text-black font-semibold text-base transition-all duration-200 glow-pulse"
+                style={{ background: "#00E87B" }}
+              >
+                Book Your Free Strategy Call
+              </Link>
+              <Link
+                href="/results"
+                className="px-8 py-4 rounded-full border text-white font-semibold text-base transition-all duration-200 hover:bg-white/10"
+                style={{ borderColor: "rgba(255,255,255,0.2)" }}
+              >
+                See Our Results
+              </Link>
+            </motion.div>
 
-        {/* Social Proof */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 text-text-secondary-dark text-sm"
-        >
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-              {["JA", "SG", "VM", "ND"].map((initials, i) => (
-                <div
-                  key={i}
-                  className="w-8 h-8 rounded-full bg-accent/20 border-2 border-bg-dark flex items-center justify-center text-accent text-xs font-bold"
+            {/* Client badges */}
+            <motion.div
+              initial={reduce ? false : { opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
+              className="flex flex-wrap gap-2 items-center"
+            >
+              <span className="text-xs mr-1" style={{ color: "#8A8F98" }}>Trusted by</span>
+              {clients.map((c) => (
+                <span
+                  key={c}
+                  className="px-3 py-1 rounded-full text-xs"
+                  style={{ color: "#8A8F98", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)" }}
                 >
-                  {initials}
-                </div>
+                  {c}
+                </span>
               ))}
-            </div>
-            <span>Trusted by <span className="text-white font-semibold">50+ D2C brands</span> across India</span>
+              <span className="text-xs" style={{ color: "#8A8F98" }}>+ 45 more</span>
+            </motion.div>
           </div>
-          <div className="hidden sm:block w-px h-4 bg-border-dark" />
-          <div className="flex items-center gap-2">
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <svg key={i} className="w-4 h-4 fill-accent text-accent" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-            </div>
-            <span>4.9/5 average rating</span>
-          </div>
+
+          {/* Right side — floating metric cards */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="hidden lg:flex flex-col gap-4"
+          >
+            {[
+              { value: "4.2x", label: "Average ROAS", delay: "0s" },
+              { value: "₹2Cr+", label: "Ad Spend Managed", delay: "0.5s" },
+              { value: "50+", label: "D2C Brands Scaled", delay: "1s" },
+            ].map((metric) => (
+              <div
+                key={metric.label}
+                className="glass-card rounded-2xl p-6"
+                style={{ animation: reduce ? "none" : `float 6s ease-in-out ${metric.delay} infinite` }}
+              >
+                <div className="font-mono font-bold text-4xl mb-1" style={{ color: "#00E87B" }}>{metric.value}</div>
+                <div className="text-sm uppercase tracking-wider" style={{ color: "#8A8F98" }}>{metric.label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        >
+          <div className="w-px h-12 bg-gradient-to-b from-transparent to-white/20" />
+          <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#00E87B" }} />
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-secondary-dark"
-      >
-        <span className="text-xs font-mono uppercase tracking-widest">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ArrowDown size={16} />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

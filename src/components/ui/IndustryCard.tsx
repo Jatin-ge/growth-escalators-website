@@ -1,5 +1,5 @@
+"use client";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 interface IndustryCardProps {
   title: string;
@@ -7,14 +7,18 @@ interface IndustryCardProps {
   href: string;
 }
 
-export function IndustryCard({ title, description, href }: IndustryCardProps) {
+export function IndustryCard({ title, description: _description, href }: IndustryCardProps) {
   return (
-    <Link href={href} className="group block bg-white border border-border-light rounded-2xl p-8 hover:border-accent/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-accent/5 transition-all duration-300">
-      <h3 className="font-syne font-bold text-xl text-text-primary-light mb-2">{title}</h3>
-      <p className="text-text-secondary-light text-sm leading-relaxed mb-4">{description}</p>
-      <span className="inline-flex items-center gap-2 text-accent text-sm font-semibold group-hover:gap-3 transition-all">
-        Explore <ArrowRight size={16} />
-      </span>
+    <Link
+      href={href}
+      className="group inline-flex items-center gap-3 px-6 py-4 rounded-full font-medium text-sm transition-all duration-200 hover:scale-105"
+      style={{
+        border: "1px solid rgba(0,0,0,0.08)",
+        background: "#FFFFFF",
+        color: "#0A0A0A",
+      }}
+    >
+      <span className="group-hover:text-black transition-colors">{title}</span>
     </Link>
   );
 }

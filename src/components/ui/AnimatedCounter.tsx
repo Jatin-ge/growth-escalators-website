@@ -13,29 +13,28 @@ export function AnimatedCounter({ target, suffix = "", prefix = "", duration = 2
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const shouldReduceMotion = useReducedMotion();
+  const shouldReduce = useReducedMotion();
 
   useEffect(() => {
     if (!isInView) return;
-    if (shouldReduceMotion) { setCount(target); return; }
-
+    if (shouldReduce) { setCount(target); return; }
     let startTime: number;
-    const animate = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const elapsed = currentTime - startTime;
+    const animate = (t: number) => {
+      if (!startTime) startTime = t;
+      const elapsed = t - startTime;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.floor(eased * target));
       if (progress < 1) requestAnimationFrame(animate);
     };
     requestAnimationFrame(animate);
-  }, [isInView, target, duration, shouldReduceMotion]);
+  }, [isInView, target, duration, shouldReduce]);
 
   return (
     <span ref={ref}>
-      {prefix && <span className="font-dm-sans">{prefix}</span>}
+      <span className="font-sans">{prefix}</span>
       <span className="font-mono">{count}</span>
-      {suffix && <span className="font-dm-sans">{suffix}</span>}
+      <span className="font-sans">{suffix}</span>
     </span>
   );
 }

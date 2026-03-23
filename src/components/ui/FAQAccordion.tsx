@@ -3,46 +3,31 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 
-interface FAQItem {
-  question: string;
-  answer: string;
-}
+interface FAQItem { question: string; answer: string; }
 
-interface FAQAccordionProps {
-  items: FAQItem[];
-}
-
-export function FAQAccordion({ items }: FAQAccordionProps) {
+export function FAQAccordion({ items }: { items: FAQItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   return (
-    <div className="space-y-3">
-      {items.map((item, index) => (
-        <div
-          key={index}
-          className="border border-border-light rounded-2xl overflow-hidden bg-white"
-        >
+    <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+      {items.map((item, i) => (
+        <div key={i} style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
           <button
-            className="w-full flex items-center justify-between p-6 text-left cursor-pointer hover:bg-gray-50 transition-colors"
-            onClick={() => setOpenIndex(openIndex === index ? null : index)}
+            className="w-full flex items-center justify-between py-6 text-left cursor-pointer group"
+            onClick={() => setOpenIndex(openIndex === i ? null : i)}
           >
-            <span className="font-syne font-bold text-text-primary-light pr-4">{item.question}</span>
-            <span className="text-accent shrink-0">
-              {openIndex === index ? <Minus size={20} /> : <Plus size={20} />}
-            </span>
+            <span className="font-semibold text-lg pr-8 group-hover:text-black transition-colors" style={{ color: "#0A0A0A" }}>{item.question}</span>
+            <span className="shrink-0" style={{ color: "#00E87B" }}>{openIndex === i ? <Minus size={18} /> : <Plus size={18} />}</span>
           </button>
           <AnimatePresence>
-            {openIndex === index && (
+            {openIndex === i && (
               <motion.div
-                initial={{ height: 0 }}
-                animate={{ height: "auto" }}
-                exit={{ height: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
                 className="overflow-hidden"
               >
-                <div className="px-6 pb-6 text-text-secondary-light leading-relaxed">
-                  {item.answer}
-                </div>
+                <p className="pb-6 leading-relaxed max-w-[80%]" style={{ color: "#5C5F66" }}>{item.answer}</p>
               </motion.div>
             )}
           </AnimatePresence>

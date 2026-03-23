@@ -1,110 +1,134 @@
 import { Service } from "@/content/services";
-import { caseStudies } from "@/content/caseStudies";
 import { SectionWrapper } from "@/components/ui/SectionWrapper";
 import { FadeInOnScroll } from "@/components/ui/FadeInOnScroll";
-import { ProcessStepper } from "@/components/ui/ProcessStepper";
+import { CTASection } from "@/components/ui/CTASection";
 import { FAQAccordion } from "@/components/ui/FAQAccordion";
 import { CaseStudyCard } from "@/components/ui/CaseStudyCard";
-import { CTASection } from "@/components/ui/CTASection";
-import { Button } from "@/components/ui/Button";
-import { CheckCircle } from "lucide-react";
+import { caseStudies } from "@/content/caseStudies";
+import { CheckCircle, ArrowRight } from "lucide-react";
+import * as Icons from "lucide-react";
+import Link from "next/link";
 
 interface ServicePageTemplateProps {
   service: Service;
 }
 
 export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
+  const IconComponent = (Icons as unknown as Record<string, React.ComponentType<{ size?: number; className?: string; strokeWidth?: number; style?: React.CSSProperties }>>)[service.icon] || Icons.Zap;
   const relatedCS = caseStudies.filter(cs => service.relatedCaseStudySlugs.includes(cs.slug));
 
   return (
     <>
-      {/* 1. Hero (Dark) */}
-      <section className="bg-bg-dark min-h-[60vh] flex items-center pt-20">
-        <div className="max-w-[1280px] mx-auto px-6 py-20">
+      {/* Hero */}
+      <section className="dark-section pt-32 pb-24 relative overflow-hidden" style={{ background: "#050505" }}>
+        <div className="absolute inset-0 pointer-events-none">
+          <div
+            className="absolute w-[500px] h-[500px] rounded-full top-0 right-0"
+            style={{ background: "radial-gradient(circle, rgba(0,232,123,0.06) 0%, transparent 70%)" }}
+          />
+        </div>
+        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
           <FadeInOnScroll>
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">Service</span>
-            <h1 className="font-syne font-bold text-5xl md:text-6xl text-white mt-4 mb-6 max-w-3xl">
+            <div className="flex items-center gap-3 mb-6">
+              <span
+                className="px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider"
+                style={{ background: "rgba(0,232,123,0.1)", color: "#00E87B" }}
+              >
+                Service
+              </span>
+            </div>
+            <IconComponent size={48} strokeWidth={1} style={{ color: "#00E87B" }} className="mb-6" />
+            <h1 className="font-display text-white mb-6 max-w-3xl" style={{ fontSize: "clamp(48px, 8vw, 96px)", lineHeight: "1.05" }}>
               {service.heroHeadline}
             </h1>
-            <p className="text-text-secondary-dark text-xl max-w-2xl mb-10 leading-relaxed">
+            <p className="text-xl leading-relaxed max-w-2xl mb-10" style={{ color: "#8A8F98" }}>
               {service.subheadline}
             </p>
-            <Button href="/book-strategy-call" size="lg" variant="primary">
-              Book a Free Strategy Call
-            </Button>
+            <Link
+              href="/book-strategy-call"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-black font-semibold transition-all duration-200 glow-pulse"
+              style={{ background: "#00E87B" }}
+            >
+              Get Started <ArrowRight size={16} />
+            </Link>
           </FadeInOnScroll>
         </div>
       </section>
 
-      {/* 2. Problem (Light) */}
+      {/* Problem */}
       <SectionWrapper variant="light">
         <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">The Problem</span>
-            <h2 className="font-syne font-bold text-4xl text-text-primary-light mt-3 mb-4">
-              Sound Familiar?
-            </h2>
-          </div>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>The Problem</p>
+          <h2 className="font-display mb-12" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Challenges We Solve</h2>
         </FadeInOnScroll>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-6">
           {service.problemPoints.map((point, i) => (
-            <FadeInOnScroll key={i} delay={i * 0.1}>
-              <div className="p-6 rounded-2xl border border-border-light bg-white hover:border-accent/30 transition-colors">
-                <h3 className="font-syne font-bold text-text-primary-light mb-2">{point.title}</h3>
-                <p className="text-text-secondary-light text-sm leading-relaxed">{point.description}</p>
+            <FadeInOnScroll key={i} delay={i * 0.08}>
+              <div
+                className="flex items-start gap-6 p-6 bg-white rounded-2xl border-l-4"
+                style={{ borderLeftColor: "#00E87B", boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04)" }}
+              >
+                <span className="font-mono font-bold text-2xl shrink-0" style={{ color: "#00E87B" }}>0{i + 1}</span>
+                <div className="pt-1">
+                  <h3 className="font-semibold text-lg mb-1" style={{ color: "#0A0A0A" }}>{point.title}</h3>
+                  <p className="leading-relaxed" style={{ color: "#5C5F66" }}>{point.description}</p>
+                </div>
               </div>
             </FadeInOnScroll>
           ))}
         </div>
       </SectionWrapper>
 
-      {/* 3. Approach (Light) */}
-      <SectionWrapper variant="light">
+      {/* Approach */}
+      <SectionWrapper variant="light" className="border-t" style={{ borderColor: "rgba(0,0,0,0.04)" }}>
         <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">Our Approach</span>
-            <h2 className="font-syne font-bold text-4xl text-text-primary-light mt-3 mb-4">
-              How We Do It
-            </h2>
-          </div>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>How We Work</p>
+          <h2 className="font-display mb-12" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Our Process</h2>
         </FadeInOnScroll>
-        <ProcessStepper steps={service.approach} />
+        <div className="space-y-8">
+          {service.approach.map((step, i) => (
+            <FadeInOnScroll key={step.step} delay={i * 0.08}>
+              <div className="grid grid-cols-[80px_1fr] gap-6 items-start">
+                <span className="font-mono font-bold text-4xl" style={{ color: "#00E87B" }}>{step.step}</span>
+                <div>
+                  <h3 className="font-semibold text-xl mb-2" style={{ color: "#0A0A0A" }}>{step.title}</h3>
+                  <p className="leading-relaxed" style={{ color: "#5C5F66" }}>{step.description}</p>
+                </div>
+              </div>
+            </FadeInOnScroll>
+          ))}
+        </div>
       </SectionWrapper>
 
-      {/* 4. Deliverables (Light) */}
-      <SectionWrapper variant="light">
+      {/* Deliverables */}
+      <SectionWrapper variant="light" className="border-t" style={{ borderColor: "rgba(0,0,0,0.04)" }}>
         <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">What You Get</span>
-            <h2 className="font-syne font-bold text-4xl text-text-primary-light mt-3 mb-4">
-              Deliverables
-            </h2>
-          </div>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>What You Get</p>
+          <h2 className="font-display mb-12" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Deliverables</h2>
         </FadeInOnScroll>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
-          {service.deliverables.map((item, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {service.deliverables.map((d, i) => (
             <FadeInOnScroll key={i} delay={i * 0.05}>
-              <div className="flex items-start gap-3 p-4 rounded-xl border border-border-light bg-white">
-                <CheckCircle size={18} className="text-accent shrink-0 mt-0.5" />
-                <span className="text-text-secondary-light text-sm">{item}</span>
+              <div
+                className="flex items-start gap-3 p-4 bg-white rounded-xl"
+                style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
+              >
+                <CheckCircle size={18} className="shrink-0 mt-0.5" style={{ color: "#00E87B" }} />
+                <span className="text-sm leading-relaxed" style={{ color: "#0A0A0A" }}>{d}</span>
               </div>
             </FadeInOnScroll>
           ))}
         </div>
       </SectionWrapper>
 
-      {/* 5. Related Case Studies (Dark) */}
+      {/* Related Case Studies */}
       {relatedCS.length > 0 && (
         <SectionWrapper variant="dark">
           <FadeInOnScroll>
-            <div className="text-center mb-16">
-              <span className="text-accent text-xs font-mono uppercase tracking-widest">Results</span>
-              <h2 className="font-syne font-bold text-4xl text-white mt-3 mb-4">
-                See It In Action
-              </h2>
-            </div>
+            <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Proof</p>
+            <h2 className="font-display text-white mb-12" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1" }}>Related Results</h2>
           </FadeInOnScroll>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {relatedCS.map((cs, i) => (
               <FadeInOnScroll key={cs.slug} delay={i * 0.1}>
                 <CaseStudyCard
@@ -112,7 +136,7 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
                   industry={cs.industry}
                   metric={cs.heroMetric}
                   metricLabel={cs.heroMetricLabel}
-                  description={cs.description}
+                  description={cs.summary}
                   href={`/results/${cs.slug}`}
                 />
               </FadeInOnScroll>
@@ -121,22 +145,19 @@ export function ServicePageTemplate({ service }: ServicePageTemplateProps) {
         </SectionWrapper>
       )}
 
-      {/* 6. FAQ (Light) */}
+      {/* FAQ */}
       <SectionWrapper variant="light">
-        <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">FAQ</span>
-            <h2 className="font-syne font-bold text-4xl text-text-primary-light mt-3 mb-4">
-              Frequently Asked Questions
-            </h2>
-          </div>
-        </FadeInOnScroll>
-        <div className="max-w-3xl mx-auto">
-          <FAQAccordion items={service.faq} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <FadeInOnScroll>
+            <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Questions</p>
+            <h2 className="font-display" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Frequently Asked</h2>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.15}>
+            <FAQAccordion items={service.faq} />
+          </FadeInOnScroll>
         </div>
       </SectionWrapper>
 
-      {/* 7. CTA */}
       <CTASection />
     </>
   );

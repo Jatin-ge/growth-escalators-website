@@ -10,365 +10,242 @@ import { IndustryCard } from "@/components/ui/IndustryCard";
 import { CaseStudyCard } from "@/components/ui/CaseStudyCard";
 import { TestimonialCard } from "@/components/ui/TestimonialCard";
 import { CTASection } from "@/components/ui/CTASection";
-import { Button } from "@/components/ui/Button";
 import { services } from "@/content/services";
 import { industries } from "@/content/industries";
 import { caseStudies } from "@/content/caseStudies";
 import { testimonials } from "@/content/testimonials";
 import { TrendingDown, DollarSign, ImageOff, FileText, ArrowRight } from "lucide-react";
+import Link from "next/link";
+
+const homepageFAQs = [
+  { question: "What's your minimum ad spend requirement?", answer: "We typically work with brands spending ₹1L+ per month on paid ads. This gives us enough data to test, learn, and optimize effectively." },
+  { question: "How long before I see results?", answer: "Most brands see meaningful improvements within 30 days. Significant scaling typically happens by month 2-3 as we build data and optimize." },
+  { question: "Do you work with Shopify and WooCommerce brands?", answer: "Yes, we work with both. We can also work with custom ecommerce platforms as long as proper tracking is in place." },
+  { question: "What if I've been burned by agencies before?", answer: "We hear this often. That's why we start with a free strategy call — no contracts, no pressure. We'll audit your current setup and tell you honestly whether we can help." },
+  { question: "Do you handle creatives or do I need to provide them?", answer: "We handle everything in-house. Our team includes a creative strategist, graphic designer, and video editor. You don't need to worry about creative production." },
+  { question: "What metrics do you optimize for?", answer: "Revenue, ROAS, CAC, and profitability. Not impressions, not reach, not clicks. We focus on the metrics that actually show up in your bank account." },
+  { question: "How do you report on performance?", answer: "Weekly performance updates with key metrics. Monthly deep-dive reviews with strategy adjustments. You always know exactly how your campaigns are performing." },
+];
+
+const processSteps = [
+  { step: "01", title: "Audit", description: "We tear apart your ad account, funnel, and creatives to find what's actually broken." },
+  { step: "02", title: "Strategy", description: "We build a data-backed growth plan with clear ROAS, CAC, and revenue targets." },
+  { step: "03", title: "Creative", description: "Our in-house team produces scroll-stopping creatives designed for conversion, not likes." },
+  { step: "04", title: "Execute", description: "We launch, test, and optimize daily. We kill losers fast and scale winners aggressively." },
+  { step: "05", title: "Scale", description: "Once we find profitable combinations, we scale spend while protecting your margins." },
+];
 
 const painPoints = [
-  {
-    icon: TrendingDown,
-    title: "Your ROAS keeps dropping",
-    description: "You're spending more on ads but seeing diminishing returns. CPMs rise, ROAS falls, and profitability disappears.",
-  },
-  {
-    icon: DollarSign,
-    title: "Ad spend feels like gambling",
-    description: "No clear data on what's working. You're guessing rather than making strategic, data-backed decisions.",
-  },
-  {
-    icon: ImageOff,
-    title: "Creative fatigue is killing results",
-    description: "The same ads running for months cause audience fatigue. You need a systematic creative testing process.",
-  },
-  {
-    icon: FileText,
-    title: "No clear growth strategy",
-    description: "Tactics without strategy. You're trying things but don't have a clear roadmap to sustainable scale.",
-  },
-];
-
-const process = [
-  {
-    step: "01",
-    title: "Free Strategy Call",
-    description: "We audit your current marketing, understand your goals, and identify the biggest growth opportunities.",
-  },
-  {
-    step: "02",
-    title: "Custom Growth Plan",
-    description: "We build a tailored strategy — channels, budget allocation, creative direction, and 90-day milestones.",
-  },
-  {
-    step: "03",
-    title: "Rapid Implementation",
-    description: "We move fast. Campaigns live within 1-2 weeks with proper tracking, creative, and targeting.",
-  },
-  {
-    step: "04",
-    title: "Optimize & Scale",
-    description: "Weekly optimization cycles identify winners fast. We scale what works and cut what doesn't.",
-  },
-  {
-    step: "05",
-    title: "Report & Grow",
-    description: "Clear, jargon-free weekly reports and monthly strategy reviews keep you in the loop at all times.",
-  },
-];
-
-const homepageFAQ = [
-  {
-    question: "What types of brands do you work with?",
-    answer: "We specialize in D2C ecommerce brands — primarily in categories like skincare, fashion, jewellery, health & wellness, and home products. We work best with brands doing ₹5L+ per month in revenue that are ready to invest in growth.",
-  },
-  {
-    question: "What's the minimum ad spend you work with?",
-    answer: "We typically require a minimum of ₹1 lakh/month in ad spend. This ensures we have enough data to optimize effectively and that our fee structure makes sense for both parties.",
-  },
-  {
-    question: "How long does it take to see results?",
-    answer: "Most brands see meaningful improvements in ROAS within 4-6 weeks. Significant revenue growth typically happens in months 2-3 as we gather data, identify winning creative and audiences, and begin scaling.",
-  },
-  {
-    question: "Do you work on performance-based fees?",
-    answer: "We work on a management fee model, not pure performance. This ensures we can dedicate the right resources without cutting corners. We are incentivized by your growth — happy clients are long-term clients.",
-  },
-  {
-    question: "Which platforms do you manage?",
-    answer: "Our core focus is Meta Ads (Facebook & Instagram) and Google Ads (Search, Shopping, Performance Max). We also support email marketing, CRO, and landing page optimization as part of full-stack engagements.",
-  },
+  { icon: TrendingDown, title: "Stuck ROAS", description: "Your ROAS has been hovering between 1.5x–2.5x for months. You've tried new audiences, new budgets — nothing moves the needle." },
+  { icon: DollarSign, title: "Rising CAC", description: "Customer acquisition costs keep climbing. Every month you spend more to get the same results — or worse." },
+  { icon: ImageOff, title: "Creative Fatigue", description: "The same ad formats that worked 3 months ago have completely stopped performing. Your creative pipeline is dry." },
+  { icon: FileText, title: "Vanity Metrics Reports", description: "Your agency sends you reports full of impressions, reach, and clicks. But your bank account tells a different story." },
 ];
 
 export default function HomePage() {
+  const featuredCaseStudies = caseStudies.slice(0, 3);
+
   return (
     <>
       {/* 1. Hero */}
       <HeroSection />
 
       {/* 2. Client Logo Carousel */}
-      <section className="bg-bg-dark border-y border-border-dark py-2">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <p className="text-center text-text-secondary-dark text-xs font-mono uppercase tracking-widest mb-4">
-            Brands We&apos;ve Scaled
-          </p>
-          <ClientLogoCarousel />
-        </div>
-      </section>
+      <ClientLogoCarousel />
 
-      {/* 3. Stats Section */}
-      <SectionWrapper variant="dark">
-        <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-white mb-4">
-              Numbers That Tell the Story
-            </h2>
-            <p className="text-text-secondary-dark text-lg">Real results across 50+ D2C brands</p>
-          </div>
-        </FadeInOnScroll>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            { value: 50, suffix: "+", label: "Brands Scaled", prefix: "" },
-            { value: 2, suffix: "Cr+", label: "Ad Spend Managed", prefix: "₹" },
-            { value: 42, suffix: "", label: "Avg ROAS (4.2x)", prefix: "" },
-            { value: 100, suffix: "+", label: "Campaigns Run", prefix: "" },
-          ].map((stat, i) => (
-            <FadeInOnScroll key={i} delay={i * 0.1}>
-              <div className="text-center">
-                <div className="font-mono font-bold text-5xl md:text-6xl text-accent mb-2">
-                  {stat.prefix && <span className="font-dm-sans">{stat.prefix}</span>}
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                </div>
-                <p className="text-text-secondary-dark text-sm uppercase tracking-wider">{stat.label}</p>
-              </div>
-            </FadeInOnScroll>
-          ))}
-        </div>
-      </SectionWrapper>
-
-      {/* 4. Pain Points (Light) */}
+      {/* 3. Problem Section */}
       <SectionWrapper variant="light">
         <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">The Problem</span>
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-text-primary-light mt-3 mb-4">
-              Does This Sound Familiar?
-            </h2>
-            <p className="text-text-secondary-light text-lg max-w-2xl mx-auto">
-              Most D2C brands face the same challenges when trying to scale with paid advertising.
-            </p>
-          </div>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Sound Familiar?</p>
+          <h2 className="font-display mb-4" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Does This Sound Familiar?</h2>
+          <p className="text-lg mb-16 max-w-xl" style={{ color: "#5C5F66" }}>Most D2C brands hit the same walls. Here&apos;s why your growth has stalled.</p>
         </FadeInOnScroll>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {painPoints.map((point, i) => (
-            <FadeInOnScroll key={i} delay={i * 0.1}>
-              <div className="flex gap-4 p-6 rounded-2xl border border-border-light bg-white hover:border-accent/30 transition-colors">
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
-                  <point.icon size={22} className="text-accent" />
-                </div>
-                <div>
-                  <h3 className="font-syne font-bold text-text-primary-light mb-2">{point.title}</h3>
-                  <p className="text-text-secondary-light text-sm leading-relaxed">{point.description}</p>
-                </div>
+            <FadeInOnScroll key={point.title} delay={i * 0.1} direction={i % 2 === 0 ? "left" : "right"}>
+              <div
+                className="bg-white rounded-2xl p-8 border-l-4 hover:-translate-y-1 transition-all duration-300"
+                style={{
+                  borderLeftColor: "#00E87B",
+                  marginTop: i % 2 === 1 ? "24px" : "0",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.04)",
+                }}
+              >
+                <point.icon size={32} strokeWidth={1.5} style={{ color: "#00E87B" }} className="mb-4" />
+                <h3 className="font-semibold text-xl mb-2" style={{ color: "#0A0A0A" }}>{point.title}</h3>
+                <p className="leading-relaxed" style={{ color: "#5C5F66" }}>{point.description}</p>
               </div>
             </FadeInOnScroll>
           ))}
         </div>
       </SectionWrapper>
 
-      {/* 5. Services (Light) */}
-      <SectionWrapper variant="light">
-        <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">What We Do</span>
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-text-primary-light mt-3 mb-4">
-              Our Services
-            </h2>
-            <p className="text-text-secondary-light text-lg max-w-2xl mx-auto">
-              Full-spectrum performance marketing for D2C brands that want to scale profitably.
+      {/* 4. Solution/Approach Section */}
+      <SectionWrapper variant="light" className="border-t" style={{ borderColor: "rgba(0,0,0,0.04)" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          <FadeInOnScroll>
+            <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Our Approach</p>
+            <h2 className="font-display mb-6" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>We Don&apos;t Just Run Ads. We Build Growth Systems.</h2>
+            <p className="text-lg leading-relaxed" style={{ color: "#5C5F66" }}>
+              Most agencies manage campaigns. We engineer profitable growth systems that coordinate ads, creatives, CRO, and retention into one machine.
             </p>
-          </div>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.2}>
+            <ProcessStepper steps={processSteps} />
+          </FadeInOnScroll>
+        </div>
+      </SectionWrapper>
+
+      {/* 5. Services — Bento Grid */}
+      <SectionWrapper variant="light" className="border-t" style={{ borderColor: "rgba(0,0,0,0.04)" }}>
+        <FadeInOnScroll>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>What We Do</p>
+          <h2 className="font-display mb-4" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Services Built for D2C Growth</h2>
+          <p className="text-lg mb-12" style={{ color: "#5C5F66" }}>Everything you need to scale revenue profitably.</p>
         </FadeInOnScroll>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {services.slice(0, 6).map((service, i) => (
-            <FadeInOnScroll key={service.slug} delay={i * 0.08}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {services.map((service, i) => (
+            <FadeInOnScroll key={service.slug} delay={i * 0.07} className={i === 0 ? "lg:col-span-2" : ""}>
               <ServiceCard
-                title={service.shortTitle}
+                title={service.title}
                 description={service.description}
                 href={`/services/${service.slug}`}
                 icon={service.icon}
+                featured={i === 0}
               />
             </FadeInOnScroll>
           ))}
         </div>
-        <div className="text-center mt-10">
-          <Button href="/services" variant="outline" size="md">
-            View All Services <ArrowRight size={16} className="ml-2 inline" />
-          </Button>
+        <FadeInOnScroll className="mt-8 text-center">
+          <Link href="/services" className="inline-flex items-center gap-2 font-semibold hover:gap-3 transition-all" style={{ color: "#00E87B" }}>
+            Explore All Services <ArrowRight size={16} />
+          </Link>
+        </FadeInOnScroll>
+      </SectionWrapper>
+
+      {/* 6. Results/Metrics */}
+      <SectionWrapper variant="dark">
+        <FadeInOnScroll>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Results That Matter</p>
+          <h2 className="font-display text-white mb-16" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1" }}>Numbers That Tell the Story</h2>
+        </FadeInOnScroll>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
+          {[
+            { target: 50, suffix: "+", label: "Brands Scaled" },
+            { target: 2, prefix: "₹", suffix: "Cr+", label: "Ad Spend Managed" },
+            { target: 4, suffix: ".2x", label: "Average ROAS" },
+            { target: 100, suffix: "+", label: "Campaigns Launched" },
+          ].map((stat, i) => (
+            <FadeInOnScroll key={stat.label} delay={i * 0.1}>
+              <div className="glass-card rounded-2xl p-8 text-center" style={{ boxShadow: "0 0 40px rgba(0,232,123,0.03)" }}>
+                <div className="font-mono font-bold mb-2" style={{ fontSize: "clamp(40px, 6vw, 72px)", lineHeight: "1.0", color: "#00E87B" }}>
+                  <AnimatedCounter target={stat.target} prefix={stat.prefix || ""} suffix={stat.suffix || ""} />
+                </div>
+                <div className="text-xs uppercase tracking-widest" style={{ color: "#8A8F98" }}>{stat.label}</div>
+              </div>
+            </FadeInOnScroll>
+          ))}
         </div>
-      </SectionWrapper>
-
-      {/* 6. How We Work (Dark) */}
-      <SectionWrapper variant="dark">
-        <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">How We Work</span>
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-white mt-3 mb-4">
-              Our Process
-            </h2>
-            <p className="text-text-secondary-dark text-lg max-w-2xl mx-auto">
-              From first call to profitable scale — here&apos;s exactly how we work.
-            </p>
-          </div>
-        </FadeInOnScroll>
-        <ProcessStepper steps={process} />
-      </SectionWrapper>
-
-      {/* 7. Case Studies (Dark) */}
-      <SectionWrapper variant="dark">
-        <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">Proof of Work</span>
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-white mt-3 mb-4">
-              Results We&apos;ve Delivered
-            </h2>
-            <p className="text-text-secondary-dark text-lg max-w-2xl mx-auto">
-              Real brands, real campaigns, real numbers.
-            </p>
-          </div>
-        </FadeInOnScroll>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {caseStudies.filter(c => c.heroMetric !== "---").map((cs, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {featuredCaseStudies.map((cs, i) => (
             <FadeInOnScroll key={cs.slug} delay={i * 0.1}>
               <CaseStudyCard
                 title={cs.brandName}
                 industry={cs.industry}
                 metric={cs.heroMetric}
                 metricLabel={cs.heroMetricLabel}
-                description={cs.description}
+                description={cs.summary}
                 href={`/results/${cs.slug}`}
               />
             </FadeInOnScroll>
           ))}
         </div>
-        <div className="text-center mt-10">
-          <Button href="/results" variant="outline" size="md">
-            View All Case Studies <ArrowRight size={16} className="ml-2 inline" />
-          </Button>
-        </div>
+        <FadeInOnScroll className="text-center">
+          <Link href="/results" className="inline-flex items-center gap-2 font-semibold hover:gap-3 transition-all" style={{ color: "#00E87B" }}>
+            View All Case Studies <ArrowRight size={16} />
+          </Link>
+        </FadeInOnScroll>
       </SectionWrapper>
 
-      {/* 8. Industries (Light) */}
+      {/* 7. Industries */}
       <SectionWrapper variant="light">
         <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">Industries</span>
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-text-primary-light mt-3 mb-4">
-              We Know Your Market
-            </h2>
-            <p className="text-text-secondary-light text-lg max-w-2xl mx-auto">
-              Deep expertise across the categories that matter most for D2C growth.
-            </p>
-          </div>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Industries We Scale</p>
+          <h2 className="font-display mb-4" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Deep Expertise in the Verticals That Matter</h2>
+          <p className="text-lg mb-12" style={{ color: "#5C5F66" }}>We don&apos;t work with everyone. We&apos;ve built deep expertise in these specific verticals.</p>
         </FadeInOnScroll>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {industries.slice(0, 6).map((industry, i) => (
-            <FadeInOnScroll key={industry.slug} delay={i * 0.08}>
-              <IndustryCard
-                title={industry.title}
-                description={industry.description}
-                href={`/industries/${industry.slug}`}
-              />
-            </FadeInOnScroll>
-          ))}
-        </div>
-        <div className="text-center mt-10">
-          <Button href="/industries" variant="outline" size="md">
-            View All Industries <ArrowRight size={16} className="ml-2 inline" />
-          </Button>
-        </div>
-      </SectionWrapper>
-
-      {/* 9. Testimonials (Light) */}
-      <SectionWrapper variant="light">
         <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">Testimonials</span>
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-text-primary-light mt-3 mb-4">
-              What Our Clients Say
-            </h2>
+          <div className="flex flex-wrap gap-4">
+            {industries.map((ind) => (
+              <IndustryCard key={ind.slug} title={ind.title} description={ind.description} href={`/industries/${ind.slug}`} />
+            ))}
           </div>
         </FadeInOnScroll>
-        <div className="flex gap-6 overflow-x-auto pb-4">
-          {testimonials.map((t, i) => (
-            <div key={i} className="shrink-0">
-              <TestimonialCard
-                quote={t.quote}
-                name={t.name}
-                company={t.company}
-                rating={t.rating}
-              />
-            </div>
-          ))}
-        </div>
       </SectionWrapper>
 
-      {/* 10. Why Us (Dark) */}
-      <SectionWrapper variant="dark">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+      {/* 8. About Preview */}
+      <SectionWrapper variant="light" className="border-t" style={{ borderColor: "rgba(0,0,0,0.04)" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <FadeInOnScroll direction="left">
-            <div>
-              <span className="text-accent text-xs font-mono uppercase tracking-widest">Why Growth Escalators</span>
-              <h2 className="font-syne font-bold text-4xl md:text-5xl text-white mt-3 mb-6">
-                We Think Like Business Owners, Not Ad Managers
-              </h2>
-              <p className="text-text-secondary-dark leading-relaxed mb-8">
-                Most agencies optimize for vanity metrics — impressions, reach, clicks. We optimize for what actually matters: profitable revenue growth. Every decision we make is filtered through the lens of your unit economics.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  "D2C-only focus — we know your challenges deeply",
-                  "Full-funnel approach from awareness to retention",
-                  "Weekly reporting with clear, actionable insights",
-                  "Dedicated account manager + specialist team",
-                  "No long-term lock-in contracts",
-                ].map((point, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center shrink-0 mt-0.5">
-                      <div className="w-2 h-2 rounded-full bg-accent" />
-                    </div>
-                    <span className="text-text-secondary-dark text-sm">{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Who We Are</p>
+            <h2 className="font-display mb-6" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Built by Marketers, Not Salespeople</h2>
+            <p className="text-lg leading-relaxed mb-8" style={{ color: "#5C5F66" }}>
+              Growth Escalators was founded with one belief: your ad budget should be treated like our own money. Every rupee is tracked, tested, and optimized for revenue. We&apos;re a small, focused team in Jaipur that works with D2C brands across India — and we only take on clients we know we can genuinely help.
+            </p>
+            <Link href="/about" className="inline-flex items-center gap-2 font-semibold hover:gap-3 transition-all" style={{ color: "#00E87B" }}>
+              Meet the Team <ArrowRight size={16} />
+            </Link>
           </FadeInOnScroll>
-          <FadeInOnScroll direction="right">
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: "ROAS Avg", value: "4.2x", sub: "Across all clients" },
-                { label: "Client Retention", value: "90%", sub: "Stay 6+ months" },
-                { label: "Avg Revenue Growth", value: "3.5x", sub: "In 90 days" },
-                { label: "Response Time", value: "<4hrs", sub: "Business hours" },
-              ].map((stat, i) => (
-                <div key={i} className="bg-bg-dark-2 border border-border-dark rounded-2xl p-6">
-                  <div className="font-mono font-bold text-3xl text-accent mb-1">{stat.value}</div>
-                  <div className="font-syne font-bold text-white text-sm mb-1">{stat.label}</div>
-                  <div className="text-text-secondary-dark text-xs">{stat.sub}</div>
-                </div>
-              ))}
+          <FadeInOnScroll direction="right" delay={0.2}>
+            <div
+              className="rounded-2xl aspect-square flex items-center justify-center"
+              style={{
+                background: "linear-gradient(135deg, #0C0C0E, #111114)",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <div className="text-center">
+                <div className="font-display mb-2" style={{ fontSize: "64px", color: "rgba(255,255,255,0.1)" }}>GE</div>
+                <div className="text-sm" style={{ color: "#8A8F98" }}>Jaipur, India</div>
+              </div>
             </div>
           </FadeInOnScroll>
         </div>
       </SectionWrapper>
 
-      {/* 11. FAQ (Light) */}
-      <SectionWrapper variant="light">
+      {/* 9. Testimonials */}
+      <SectionWrapper variant="light" className="border-t" style={{ borderColor: "rgba(0,0,0,0.04)" }}>
         <FadeInOnScroll>
-          <div className="text-center mb-16">
-            <span className="text-accent text-xs font-mono uppercase tracking-widest">FAQ</span>
-            <h2 className="font-syne font-bold text-4xl md:text-5xl text-text-primary-light mt-3 mb-4">
-              Common Questions
-            </h2>
-          </div>
+          <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Client Feedback</p>
+          <h2 className="font-display mb-12" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>What Brands Say About Working With Us</h2>
         </FadeInOnScroll>
-        <div className="max-w-3xl mx-auto">
-          <FAQAccordion items={homepageFAQ} />
+        <div className="flex gap-6 overflow-x-auto pb-4 -mx-6 px-6 snap-x snap-mandatory" style={{ scrollbarWidth: "none" }}>
+          {testimonials.map((t, i) => (
+            <div key={i} className="snap-start shrink-0">
+              <TestimonialCard quote={t.quote} name={t.name} company={t.company} rating={t.rating} />
+            </div>
+          ))}
         </div>
       </SectionWrapper>
 
-      {/* 12. CTA */}
+      {/* 10. FAQ */}
+      <SectionWrapper variant="light" className="border-t" style={{ borderColor: "rgba(0,0,0,0.04)" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <FadeInOnScroll>
+            <p className="text-xs font-semibold uppercase mb-4" style={{ color: "#00E87B", letterSpacing: "0.2em" }}>Questions</p>
+            <h2 className="font-display mb-4" style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: "1.1", color: "#0A0A0A" }}>Frequently Asked Questions</h2>
+            <p className="leading-relaxed" style={{ color: "#5C5F66" }}>
+              Can&apos;t find what you&apos;re looking for?{" "}
+              <Link href="/book-strategy-call" className="hover:underline" style={{ color: "#00E87B" }}>Book a call</Link> and we&apos;ll answer everything.
+            </p>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.15}>
+            <FAQAccordion items={homepageFAQs} />
+          </FadeInOnScroll>
+        </div>
+      </SectionWrapper>
+
+      {/* 11. CTA */}
       <CTASection />
     </>
   );

@@ -1,33 +1,37 @@
 "use client";
-import { FadeInOnScroll } from "./FadeInOnScroll";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
 
-interface Step {
-  step: string;
-  title: string;
-  description: string;
-}
+interface Step { step: string; title: string; description: string; }
 
-interface ProcessStepperProps {
-  steps: Step[];
-}
+export function ProcessStepper({ steps }: { steps: Step[] }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const shouldReduce = useReducedMotion();
 
-export function ProcessStepper({ steps }: ProcessStepperProps) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4">
-      {steps.map((step, index) => (
-        <FadeInOnScroll key={step.step} delay={index * 0.1}>
-          <div className="relative flex flex-col items-center text-center md:items-start md:text-left">
-            {index < steps.length - 1 && (
-              <div className="hidden md:block absolute top-5 left-[60%] w-full h-[2px] bg-gradient-to-r from-accent/50 to-border-dark" />
-            )}
-            <div className="w-10 h-10 rounded-full bg-accent text-black font-mono font-bold text-sm flex items-center justify-center mb-4 shrink-0 z-10">
-              {step.step}
+    <div ref={ref} className="relative">
+      {/* Vertical line */}
+      <div className="absolute left-8 top-0 bottom-0 w-px hidden md:block" style={{ background: "rgba(0,0,0,0.1)" }} />
+      <div className="space-y-8">
+        {steps.map((step, i) => (
+          <motion.div
+            key={step.step}
+            initial={shouldReduce ? false : { opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: i * 0.1 }}
+            className="flex gap-8 items-start"
+          >
+            <div className="shrink-0 w-16 h-16 flex items-center justify-center relative">
+              <span className="font-mono font-bold text-2xl" style={{ color: "#00E87B" }}>{step.step}</span>
             </div>
-            <h4 className="font-syne font-bold text-lg mb-2">{step.title}</h4>
-            <p className="text-sm text-text-secondary-dark leading-relaxed">{step.description}</p>
-          </div>
-        </FadeInOnScroll>
-      ))}
+            <div className="pt-3">
+              <h4 className="font-semibold text-xl mb-2" style={{ color: "#0A0A0A" }}>{step.title}</h4>
+              <p className="leading-relaxed" style={{ color: "#5C5F66" }}>{step.description}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }

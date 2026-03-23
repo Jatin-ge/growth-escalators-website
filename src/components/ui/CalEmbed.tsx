@@ -4,14 +4,17 @@ import Script from "next/script";
 
 export function CalEmbed() {
   useEffect(() => {
-    if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).Cal) {
-      const Cal = (window as unknown as Record<string, unknown>).Cal as (action: string, options: { elementOrSelector: string; calLink: string; layout?: string }) => void;
-      Cal("inline", {
-        elementOrSelector: "#cal-embed",
-        calLink: "growthescalators/book/d2c-strategy",
-        layout: "month_view",
-      });
-    }
+    const tryInit = () => {
+      const win = window as unknown as Record<string, unknown>;
+      if (win.Cal) {
+        (win.Cal as (a: string, o: { elementOrSelector: string; calLink: string }) => void)(
+          "inline",
+          { elementOrSelector: "#cal-embed", calLink: "growthescalators/book/d2c-strategy" }
+        );
+      }
+    };
+    const timer = setTimeout(tryInit, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -20,19 +23,19 @@ export function CalEmbed() {
         src="https://app.cal.com/embed/embed.js"
         strategy="lazyOnload"
         onLoad={() => {
-          if (typeof window !== "undefined" && (window as unknown as Record<string, unknown>).Cal) {
-            const Cal = (window as unknown as Record<string, unknown>).Cal as (action: string, options: { elementOrSelector: string; calLink: string; layout?: string }) => void;
-            Cal("inline", {
-              elementOrSelector: "#cal-embed",
-              calLink: "growthescalators/book/d2c-strategy",
-              layout: "month_view",
-            });
+          const win = window as unknown as Record<string, unknown>;
+          if (win.Cal) {
+            (win.Cal as (a: string, o: { elementOrSelector: string; calLink: string }) => void)(
+              "inline",
+              { elementOrSelector: "#cal-embed", calLink: "growthescalators/book/d2c-strategy" }
+            );
           }
         }}
       />
       <div
         id="cal-embed"
-        className="w-full min-h-[600px] rounded-2xl overflow-hidden border border-border-light"
+        className="w-full min-h-[600px] rounded-2xl overflow-hidden bg-white"
+        style={{ border: "1px solid rgba(0,0,0,0.06)" }}
       />
     </>
   );
